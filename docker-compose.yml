@@ -1,0 +1,79 @@
+version: "3.5"
+
+networks:
+    frontend:
+        driver: ${NETWORKS_DRIVER}
+
+services:
+    ### Engine Core ###########################################
+    engine:
+        container_name: zkit_engine
+        build:
+            context: ./engine
+            args:
+                - PYTHON_VERSION=${PYTHON_VERSION}
+                - INSTALL_FFMPEG=${INSTALL_FFMPEG}
+        environment:
+            - APP_ENV=${APP_ENV}
+            - DATABASE_URL=postgresql://${SQL_USER}:${SQL_PASSWORD}@${SQL_HOST}:${SQL_PORT}/${SQL_DB}
+            - SQL_HOST=${SQL_HOST}
+            - SQL_DB=${SQL_DB}
+            - SQL_USER=${SQL_USER}
+            - SQL_PASSWORD=${SQL_PASSWORD}
+            - SQL_PORT=${SQL_PORT}
+        env_file:
+            - .env
+        command: ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8000"]
+        ports:
+            - "${APP_PORT}:8000"
+        volumes:
+            - ./engine/src/:/zkit/
+        networks:
+            - frontend
+        depends_on:
+            - postgres
+        restart: unless-stopped
+
+    ### PostgreSQL #########################################
+    postgres:
+        container_name: zkit_postgres
+        build:
+            context: ./containers/postgres
+            args:
+                - POSTGRES_VERSION=${POSTGRES_VERSION}
+        volumes:
+            - ${DATA_PATH_HOST}/postgres:/var/lib/postgresql/data/
+        environment:
+            POSTGRES_DB: ${POSTGRES_DB:-dbname}
+            POSTGRES_USER: ${POSTGRES_USER:-username}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+            PGDATA: /var/lib/postgresql/data/
+        ports:
+            - "${POSTGRES_PORT}:5432"
+        networks:
+            - frontend
+        depends_on:
+            - pgadmin
+        restart: unless-stopped
+
+    ### pgAdmin ##############################################
+    pgadmin:
+        container_name: zkit_pgadmin
+        build:
+            context: ./containers/pgadmin
+        environment:
+            PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-info@info.com}
+            PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-password}
+        volumes:
+            - ${DATA_PATH_HOST}/pgadmin:/root/.pgadmin
+        ports:
+            - "${PGADMIN_PORT:-5050}:80"
+        networks:
+            - frontend
+        restart: unless-stopped
+
+volumes:
+    postgres:
+        driver: ${VOLUMES_DRIVER}
+    pgadmin:
+        driver: ${VOLUMES_DRIVER}
