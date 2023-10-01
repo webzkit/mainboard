@@ -1,0 +1,6 @@
+[submodule "engine"]
+	path = engine
+	url = git@github.com:webzkit/engine.git
+[submodule "dashboard"]
+	path = dashboard
+	url = git@github.com:webzkit/dashboard.git
