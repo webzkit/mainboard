@@ -1,6 +1,8 @@
 [submodule "engine"]
 	path = engine
-	url = git@github.com:webzkit/engine.git
+    url = git@github.com:webzkit/engine.git
+    ignore = all
 [submodule "dashboard"]
 	path = dashboard
-	url = git@github.com:webzkit/dashboard.git
+    url = git@github.com:webzkit/dashboard.git
+    ignore = all
