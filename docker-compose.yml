@@ -72,8 +72,28 @@ services:
             - frontend
         restart: unless-stopped
 
+    ### mongoDB #########################################
+    mongo:
+        container_name: zkit_mongo
+        build:
+            context: ./containers/mongo
+            args:
+                - MONGO_VERSION=${MONGO_VERSION}
+        restart: unless-stopped
+        volumes:
+            - ${DATA_PATH_HOST}/mongodb:/data/db
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+            MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+        ports:
+            - ${MONGO_PORT}:27017
+        networks:
+            - frontend
+
 volumes:
     postgres:
         driver: ${VOLUMES_DRIVER}
     pgadmin:
+        driver: ${VOLUMES_DRIVER}
+    mongo:
         driver: ${VOLUMES_DRIVER}

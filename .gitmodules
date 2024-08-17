@@ -6,3 +6,7 @@
 	path = dashboard
     url = git@github.com:webzkit/dashboard.git
     ignore = all
+[submodule "content"]
+	path = content
+    url = git@github.com:webzkit/content.git
+    ignore = all
