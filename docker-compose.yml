@@ -34,6 +34,33 @@ services:
             - postgres
         restart: unless-stopped
 
+    ### content service ###########################################
+    content:
+        container_name: zkit_content
+        build:
+            context: ./content
+            args:
+                - PYTHON_VERSION=${PYTHON_VERSION}
+        environment:
+            - APP_ENV=${CONTENT_APP_ENV}
+            - DATABASE_URL=mongodb://mongo:27017/zkits
+            - MONGO_PORT=${MONGO_PORT}
+            - MONGO_DB=${MONGO_DB}
+            - MONGO_USERNAME=${MONGO_ROOT_USERNAME}
+            - MONGO_PASSWORD=${MONGO_ROOT_PASSWORD}
+        env_file:
+            - .env
+        command: ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8000", "--log-level", "debug"]
+        ports:
+            - "${CONTENT_APP_PORT}:8000"
+        volumes:
+            - ./content/src/:/zkit/
+        networks:
+            - frontend
+        depends_on:
+            - mongo
+        restart: unless-stopped
+
     ### PostgreSQL #########################################
     postgres:
         container_name: zkit_postgres
