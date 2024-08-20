@@ -34,6 +34,34 @@ services:
             - postgres
         restart: unless-stopped
 
+    ### ecommerce service #########################################
+    ecommerce:
+        container_name: zkit_ecommerce
+        build:
+            context: ./ecommerce
+            args:
+                - PYTHON_VERSION=${PYTHON_VERSION}
+        environment:
+            - APP_ENV=${ECOMMERCE_APP_ENV}
+            - DATABASE_URL=postgresql://${SQL_USER}:${SQL_PASSWORD}@${SQL_HOST}:${SQL_PORT}/${ECOMMERCE_APP_DB}
+            - SQL_HOST=${SQL_HOST}
+            - SQL_DB=${ECOMMERCE_APP_DB}
+            - SQL_USER=${SQL_USER}
+            - SQL_PASSWORD=${SQL_PASSWORD}
+            - SQL_PORT=${SQL_PORT}
+        env_file:
+            - .env
+        command: ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8000", "--log-level", "debug"]
+        ports:
+            - "${ECOMMERCE_APP_PORT}:8000"
+        volumes:
+            - ./ecommerce/src/:/zkit/
+        networks:
+            - frontend
+        depends_on:
+            - postgres
+        restart: unless-stopped
+
     ### content service ###########################################
     content:
         container_name: zkit_content

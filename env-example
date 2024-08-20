@@ -67,6 +67,14 @@ CONTENT_APP_NAME=Content-Zkit
 CONTENT_APP_ENV=development
 CONTENT_APP_PORT=81
 
+### ECOMMERCE SERVICE ####################################
+ECOMMERCE_APP_DOMAIN=http://ecommerce-zkit.local
+ECOMMERCE_APP_API_PREFIX=/api/v1
+ECOMMERCE_APP_NAME=Ecommerce-Zkit
+ECOMMERCE_APP_ENV=development
+ECOMMERCE_APP_PORT=82
+ECOMMERCE_APP_DB=ecommerces
+
 ### POSTGRES ##########################################
 POSTGRES_VERSION=alpine
 POSTGRES_DB=zkit
