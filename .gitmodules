@@ -10,3 +10,11 @@
 	path = content
     url = git@github.com:webzkit/content.git
     ignore = all
+[submodule "ecommerce"]
+	path = ecommerce
+    url = git@github.com:webzkit/ecommerce.git
+    ignore = all
+
+
+
+
