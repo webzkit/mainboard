@@ -75,6 +75,14 @@ ECOMMERCE_APP_ENV=development
 ECOMMERCE_APP_PORT=82
 ECOMMERCE_APP_DB=ecommerces
 
+### MULTIMEDIA SERVICE ####################################
+MULTIMEDIA_APP_DOMAIN=http://multimedia-zkit.local
+MULTIMEDOA_APP_API_PREFIX=/api/v1
+MULTIMEDIA_APP_NAME=MultiMedia-Zkit
+MULTIMEDIA_APP_ENV=development
+MULTIMEDIA_APP_PORT=83
+MULTIMEDIA_APP_DB=multimedias
+
 ### POSTGRES ##########################################
 POSTGRES_VERSION=alpine
 POSTGRES_DB=zkit
