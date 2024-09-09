@@ -18,3 +18,7 @@
 	path = multimedia
     url = git@github.com:webzkit/multimedia.git
     ignore = all
+[submodule "avatar"]
+	path = avatar
+	url = git@github.com:webzkit/avatar.git
+    ignore = all
