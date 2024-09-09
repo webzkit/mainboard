@@ -60,6 +60,14 @@ THUMBNAIL_MAX_WIDTH=320
 # Qrcode
 QR_IMAGE_WITH_LOGO=True
 
+### AVATAR SERVICE ####################################
+AVATAR_APP_DOMAIN=http://avatar-zkit.local
+AVATAR_APP_API_PREFIX=/api/v1
+AVATAR_APP_NAME=Avatar-Zkit
+AVATAR_APP_ENV=development
+AVATAR_APP_PORT=84
+AVATAR_APP_DB=avatars
+
 ### CONTENT SERVICE ####################################
 CONTENT_APP_DOMAIN=http://content-zkit.local
 CONTENT_APP_API_PREFIX=/api/v1

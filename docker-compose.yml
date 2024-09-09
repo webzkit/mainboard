@@ -13,14 +13,6 @@ services:
             args:
                 - PYTHON_VERSION=${PYTHON_VERSION}
                 - INSTALL_FFMPEG=${INSTALL_FFMPEG}
-        environment:
-            - APP_ENV=${APP_ENV}
-            - DATABASE_URL=postgresql://${SQL_USER}:${SQL_PASSWORD}@${SQL_HOST}:${SQL_PORT}/${SQL_DB}
-            - SQL_HOST=${SQL_HOST}
-            - SQL_DB=${SQL_DB}
-            - SQL_USER=${SQL_USER}
-            - SQL_PASSWORD=${SQL_PASSWORD}
-            - SQL_PORT=${SQL_PORT}
         env_file:
             - .env
         command: ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8000", "--log-level", "debug"]
@@ -28,6 +20,27 @@ services:
             - "${APP_PORT}:8000"
         volumes:
             - ./engine/src/:/zkit/
+        networks:
+            - frontend
+        depends_on:
+            - postgres
+        restart: unless-stopped
+
+    ## Avatar #################################################
+    avatar:
+        container_name: zkit_avatar
+        build:
+            context: ./avatar
+            args:
+                - PYTHON_VERSION=${PYTHON_VERSION}
+                - INSTALL_FFMPEG=${INSTALL_FFMPEG}
+        env_file:
+            - .env
+        command: ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8000", "--log-level", "debug"]
+        ports:
+            - "${AVATAR_APP_PORT}:8000"
+        volumes:
+            - ./avatar/src/:/zkit/
         networks:
             - frontend
         depends_on:
