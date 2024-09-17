@@ -22,3 +22,7 @@
 	path = avatar
 	url = git@github.com:webzkit/avatar.git
     ignore = all
+[submodule "api_gateway"]
+	path = api_gateway
+	url = git@github.com:webzkit/api_gateway.git
+    ignore = all
