@@ -23,6 +23,7 @@ services:
             - frontend
         depends_on:
             - engine
+            - redis
         restart: unless-stopped
 
     ### User service ###########################################
@@ -43,10 +44,6 @@ services:
             - frontend
         depends_on:
             - postgres
-            - avatar
-            - ecommerce
-            - content
-            - multimedia
         restart: unless-stopped
 
     ## Avatar #################################################
@@ -180,6 +177,20 @@ services:
         networks:
             - frontend
 
+    ### Redis ##############################################
+    redis:
+        container_name: zkit_redis
+        build:
+            context: ./containers/redis
+            args:
+                - REDIS_VERSION=${REDIS_VERSION}
+        restart: unless-stopped
+        volumes:
+            - ${DATA_PATH_HOST}/redis:/data
+        ports:
+            - ${REDIS_PORT}:6379
+        networks:
+            - frontend
 volumes:
     postgres:
         driver: ${VOLUMES_DRIVER}
