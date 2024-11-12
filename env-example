@@ -36,6 +36,10 @@ POSTGRES_USER=default
 POSTGRES_PASSWORD=secret
 POSTGRES_PORT=5432
 
+### REDIS #############################################
+REDIS_CACHE_HOST=redis
+REDIS_CACHE_PORT=6379
+
 ### PGADMIN ###########################################
 # use this address http://ip6-localhost:5050
 PGADMIN_PORT=5050

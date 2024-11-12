@@ -143,22 +143,6 @@ services:
             - pgadmin
         restart: unless-stopped
 
-    ### pgAdmin ##############################################
-    pgadmin:
-        container_name: zkit_pgadmin
-        build:
-            context: ./containers/pgadmin
-        environment:
-            PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-info@info.com}
-            PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-password}
-        volumes:
-            - ${DATA_PATH_HOST}/pgadmin:/root/.pgadmin
-        ports:
-            - "${PGADMIN_PORT:-5050}:80"
-        networks:
-            - frontend
-        restart: unless-stopped
-
     ### mongo DB #########################################
     mongo:
         container_name: zkit_mongo
@@ -191,6 +175,24 @@ services:
             - ${REDIS_PORT}:6379
         networks:
             - frontend
+
+    ## For developer
+    ### pgAdmin ##############################################
+    pgadmin:
+        container_name: zkit_pgadmin
+        build:
+            context: ./containers/pgadmin
+        environment:
+            PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-info@info.com}
+            PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-password}
+        volumes:
+            - ${DATA_PATH_HOST}/pgadmin:/root/.pgadmin
+        ports:
+            - "${PGADMIN_PORT:-5050}:80"
+        networks:
+            - frontend
+        restart: unless-stopped
+
 volumes:
     postgres:
         driver: ${VOLUMES_DRIVER}
