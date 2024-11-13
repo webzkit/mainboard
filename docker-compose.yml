@@ -128,6 +128,8 @@ services:
             context: ./containers/postgres
             args:
                 - POSTGRES_VERSION=${POSTGRES_VERSION}
+        ## for develop
+        command: postgres -c log_destination=stderr -c log_statement=all -c log_connections=on -c log_disconnections=on
         volumes:
             - ${DATA_PATH_HOST}/postgres:/var/lib/postgresql/data/
         environment:
