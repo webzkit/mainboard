@@ -27,18 +27,18 @@ BACKEND_CORS_ORIGINS=["http://localhost:5500", "http://localhost:5501"]
 PYTHON_VERSION=3.11-slim
 INSTALL_FFMPEG=True
 REDIS_VERSION=alpine
+
+### REDIS ##############################################
+REDIS_HOST=redis
+REDIS_PASSWORD=secret
 REDIS_PORT=6379
 
-### POSTGRES ##########################################
+### POSTGRES ###########################################
 POSTGRES_VERSION=alpine
 POSTGRES_HOST=postgres
 POSTGRES_USER=default
 POSTGRES_PASSWORD=secret
 POSTGRES_PORT=5432
-
-### REDIS #############################################
-REDIS_CACHE_HOST=redis
-REDIS_CACHE_PORT=6379
 
 ### PGADMIN ###########################################
 # use this address http://ip6-localhost:5050
@@ -53,55 +53,61 @@ MONGO_HOST=mongo
 MONGO_PORT=27017
 MONGO_VERSION=7.0.12
 
-### API Gateway ######################################
-APP_NAME=API-Gateway
-APP_DOMAIN=http://zkit.local
-APP_API_PREFIX=/api/v1
-APP_ENV=development
-APP_PORT=80
-
+### API Gateway #######################################
 USER_SERVICE_URL=http://engine:8000
 AVATAR_SERVICE_URL=http://avatar:8000
 
+APP_NAME=Api-Gateway
+APP_DOMAIN=http://api-gateway.local
+APP_API_PREFIX=/api/v1
+APP_ENV=development
+APP_PORT=80
+REDIS_CACHE_DB=0
+REDIS_RATE_DB=0
+DDEFAULT_RATE_LIMIT_LIMIT=100  # 100 times
+DEFAULT_RATE_LIMIT_PERIOD=3600 # 1 hours
+
+
 ### User Service ######################################
-USER_APP_NAME=User-ZKit
-USER_APP_DOMAIN=http://user-zkit.local
+USER_APP_NAME=User
+USER_APP_DOMAIN=http://user-service.local
 USER_APP_API_PREFIX=/api/v1
 USER_APP_ENV=development
 USER_APP_PORT=8080
 USER_APP_DB=engines
 
 ### AVATAR SERVICE ####################################
-AVATAR_APP_DOMAIN=http://avatar-zkit.local
+AVATAR_APP_NAME=Avatar
+AVATAR_APP_DOMAIN=http://avatar-service.local
 AVATAR_APP_API_PREFIX=/api/v1
-AVATAR_APP_NAME=Avatar-Zkit
 AVATAR_APP_ENV=development
 AVATAR_APP_PORT=8081
 AVATAR_APP_DB=avatars
 
 ### CONTENT SERVICE ####################################
-CONTENT_APP_DOMAIN=http://content-zkit.local
+CONTENT_APP_NAME=Content
+CONTENT_APP_DOMAIN=http://content-service.local
 CONTENT_APP_API_PREFIX=/api/v1
-CONTENT_APP_NAME=Content-Zkit
 CONTENT_APP_ENV=development
 CONTENT_APP_PORT=8082
 CONTENT_APP_DB=zkits
 
 ### ECOMMERCE SERVICE ####################################
-ECOMMERCE_APP_DOMAIN=http://ecommerce-zkit.local
+ECOMMERCE_APP_NAME=Ecommerce
+ECOMMERCE_APP_DOMAIN=http://ecommerce-service.local
 ECOMMERCE_APP_API_PREFIX=/api/v1
-ECOMMERCE_APP_NAME=Ecommerce-Zkit
 ECOMMERCE_APP_ENV=development
 ECOMMERCE_APP_PORT=8083
 ECOMMERCE_APP_DB=ecommerces
 
 ### MULTIMEDIA SERVICE ####################################
-MULTIMEDIA_APP_DOMAIN=http://multimedia-zkit.local
+MULTIMEDIA_APP_NAME=MultiMedia
+MULTIMEDIA_APP_DOMAIN=http://multimedia-service.local
 MULTIMEDIA_APP_API_PREFIX=/api/v1
-MULTIMEDIA_APP_NAME=MultiMedia-Zkit
 MULTIMEDIA_APP_ENV=development
 MULTIMEDIA_APP_PORT=8084
 MULTIMEDIA_APP_DB=multimedias
+
 # supported: local, google, s3
 MULTIMEDIA_PREFERED_STORAGE=local
 # save original file or nah True/False
@@ -119,4 +125,3 @@ MULTIMEDIA_IMAGE_THUMBNAIL_MAX_WIDTH=320
 MULTIMEDIA_QR_IMAGE_WITH_LOGO=True
 MULTIMEDIA_QR_IMAGE_LOCAL_PATH=static/qr/
 MULTIMEDIA_QR_IMAGE_LOGO_PATH=static/logo/logo.png
-
