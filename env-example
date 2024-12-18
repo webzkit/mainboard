@@ -54,7 +54,7 @@ MONGO_PORT=27017
 MONGO_VERSION=7.0.12
 
 ### API Gateway #######################################
-USER_SERVICE_URL=http://engine:8000
+ENGINE_SERVICE_URL=http://engine:8000
 AVATAR_SERVICE_URL=http://avatar:8000
 
 APP_NAME=Api-Gateway
@@ -62,23 +62,22 @@ APP_DOMAIN=http://api-gateway.local
 APP_API_PREFIX=/api/v1
 APP_ENV=development
 APP_PORT=80
+
 REDIS_CACHE_DB=0
 REDIS_RATE_DB=0
 DDEFAULT_RATE_LIMIT_LIMIT=100  # 100 times
 DEFAULT_RATE_LIMIT_PERIOD=3600 # 1 hours
 
 
-### User Service ######################################
-USER_APP_NAME=User
-USER_APP_DOMAIN=http://user-service.local
-USER_APP_API_PREFIX=/api/v1
-USER_APP_ENV=development
-USER_APP_PORT=8080
-USER_APP_DB=engines
+### Engine Service ######################################
+ENGINE_APP_NAME=Engine
+ENGINE_APP_API_PREFIX=/api/v1
+ENGINE_APP_ENV=development
+ENGINE_APP_PORT=8080
+ENGINE_APP_DB=engines
 
 ### AVATAR SERVICE ####################################
 AVATAR_APP_NAME=Avatar
-AVATAR_APP_DOMAIN=http://avatar-service.local
 AVATAR_APP_API_PREFIX=/api/v1
 AVATAR_APP_ENV=development
 AVATAR_APP_PORT=8081
