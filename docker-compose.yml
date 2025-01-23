@@ -23,6 +23,7 @@ services:
             - frontend
         depends_on:
             - engine
+            - avatar
             - redis
         restart: unless-stopped
 
@@ -199,7 +200,7 @@ services:
     ##
     kafka:
         image: obsidiandynamics/kafka
-        container_name: kafka
+        container_name: zkit_kafka
         restart: "no"
         ports:
             - "2181:2181"
@@ -224,7 +225,7 @@ services:
     ##
     kafka-ui:
         image: provectuslabs/kafka-ui
-        container_name: kafka-ui
+        container_name: zkit_kafka_ui
         ports:
             - "7070:8080"
         restart: always
