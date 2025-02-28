@@ -235,6 +235,46 @@ services:
         networks:
             - frontend
 
+    ## Logging
+    clickhouse:
+        image: clickhouse/clickhouse-server
+        container_name: zkit_clickhouse
+        volumes:
+            - ${DATA_PATH_HOST}/clickhouse/data_dir:/var/lib/clickhouse
+            #- ./containers/clickhouse:/etc/clickhouse-server/users.d/
+        ulimits:
+            nofile:
+                soft: 262144
+                hard: 262144
+        ports:
+            - 9123:8123
+            - 8002:9000
+        networks:
+            - frontend
+
+    clickhouse-ui:
+        image: spoonest/clickhouse-tabix-web-client
+        container_name: zkit_clickhouse_ui
+        networks:
+            - frontend
+        ports:
+            - 7071:80
+        environment:
+            - CH_NAME=my_config
+            - CH_HOST=clickhouse:9123
+            - USER=myuser
+            - PASSWORD=mypass
+
+    ## Monior
+    jaeger:
+        image: jaegertracing/all-in-one:1.24
+        container_name: zkit_monitor_jaeger
+        ports:
+            - 6831:6831/udp
+            - 16686:16686
+        networks:
+            - frontend
+
 volumes:
     postgres:
         driver: ${VOLUMES_DRIVER}
