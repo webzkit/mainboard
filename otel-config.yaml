@@ -1,0 +1,23 @@
+receivers:
+    otlp:
+        protocols:
+            grpc:
+                endpoint: 0.0.0.0:4317
+extensions:
+    health_check:
+
+processors:
+    batch:
+
+exporters:
+    otlphttp/openobserve:
+        endpoint: http://openobserve:5080/api/default
+        headers:
+            Authorization: Basic cm9vdEBleGFtcGxlLmNvbTpGZHE5YnRYcWgxYnc4bVJx
+            stream-name: default
+service:
+    pipelines:
+        traces:
+            receivers: [otlp]
+            processors: [batch]
+            exporters: [otlphttp/openobserve]
