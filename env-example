@@ -54,7 +54,7 @@ MONGO_PORT=27017
 MONGO_VERSION=7.0.12
 
 ### API Gateway #######################################
-API_GATEWAY_SERVICE_URL=http://api_gateway:8000
+API_SERVICE_SERVICE_URL=http://api_gateway:8000
 ENGINE_SERVICE_URL=http://engine:8000
 AVATAR_SERVICE_URL=http://avatar:8000
 

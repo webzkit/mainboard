@@ -4,47 +4,32 @@ networks:
     frontend:
         driver: ${NETWORKS_DRIVER}
 
+include:
+    - ./engine/service.yml
+
 services:
     #### Api Gateway service ###########################################
     api_gateway:
         container_name: zkit_api_gateway
         build:
             context: ./api_gateway
+            dockerfile: Dockerfile
             args:
                 - PYTHON_VERSION=${PYTHON_VERSION}
         env_file:
             - .env
-        command: ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8000", "--log-level", "debug"]
+            - ./api_gateway/.env
         ports:
-            - "${APP_PORT}:8000"
+            - "80:8000"
         volumes:
             - ./api_gateway/src/:/zkit/
         networks:
             - frontend
         depends_on:
+            - consul
             - engine
             - avatar
             - redis
-        restart: unless-stopped
-
-    ### Engine service ###########################################
-    engine:
-        container_name: zkit_engine
-        build:
-            context: ./engine
-            args:
-                - PYTHON_VERSION=${PYTHON_VERSION}
-        env_file:
-            - .env
-        command: ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8000", "--log-level", "debug"]
-        ports:
-            - "${ENGINE_APP_PORT}:8000"
-        volumes:
-            - ./engine/src/:/zkit/
-        networks:
-            - frontend
-        depends_on:
-            - postgres
         restart: unless-stopped
 
     ## Avatar #################################################
@@ -267,49 +252,12 @@ services:
             - USER=myuser
             - PASSWORD=mypass
 
-    openobserve:
-        image: public.ecr.aws/zinclabs/openobserve:latest
-        restart: unless-stopped
-        environment:
-            ZO_ROOT_USER_EMAIL: "root@example.com"
-            ZO_ROOT_USER_PASSWORD: "Complexpass#123"
-        ports:
-            - "5080:5080"
-        volumes:
-            - ${DATA_PATH_HOST}/openobserve:/data
-        networks:
-            - frontend
-
-    ## OpenTelemetry
-    otel-collector:
-        image: otel/opentelemetry-collector:0.121.0
-        restart: always
-        command: ["--config=/etc/otel-collector-config.yaml"]
-        volumes:
-            - ./otel-config.yaml:/etc/otel-collector-config.yaml
-        ports:
-            - "1888:1888" # pprof extension
-            - "8888:8888" # Prometheus metrics exposed by the collector
-            - "8889:8889" # Prometheus exporter metrics
-            - "13133:13133" # health_check extension
-            - "4317:4317" # OTLP gRPC receiver
-            - "55679:55679" # zpages extension
-        networks:
-            - frontend
-
-    ## Monior
-    jaeger:
-        image: jaegertracing/all-in-one:1.24
-        container_name: zkit_monitor_jaeger
-        ports:
-            - 6831:6831/udp
-            - 16686:16686
-        networks:
-            - frontend
-
+    #### Monior
     consul:
-        image: consul:1.15.4
         container_name: zkit_monitor_consul
+        build:
+            context: ./containers/monitors/consul
+            dockerfile: Dockerfile
         command: consul agent -dev -client 0.0.0.0
         volumes:
             - ${DATA_PATH_HOST}/consul/data:/consul/data
