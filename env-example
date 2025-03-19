@@ -53,16 +53,21 @@ MONGO_HOST=mongo
 MONGO_PORT=27017
 MONGO_VERSION=7.0.12
 
-### API Gateway #######################################
-API_SERVICE_SERVICE_URL=http://api_gateway:8000
-ENGINE_SERVICE_URL=http://engine:8000
-AVATAR_SERVICE_URL=http://avatar:8000
+### Consul Service ####################################
+CONSUL_HOST=consul
+CONSUL_PORT=8500
+CONSUL_INTERVAL=60s
+CONSUL_TIMEOUT=5s
 
+SERVICE_NAME=api_gateway
+ENGINE_SERVICE_NAME=engine
+AVATAR_SERVICE_NAME=avatar
+
+### API Gateway #######################################
 APP_NAME=Api-Gateway
-APP_DOMAIN=http://api-gateway.local
 APP_API_PREFIX=/api/v1
 APP_ENV=development
-APP_PORT=80
+API_GATEWAY_SERVICE_URL=http://api_gateway:8000
 
 REDIS_CACHE_DB=0
 REDIS_RATE_DB=0
@@ -70,19 +75,24 @@ DDEFAULT_RATE_LIMIT_LIMIT=100  # 100 times
 DEFAULT_RATE_LIMIT_PERIOD=3600 # 1 hours
 
 
-### Engine Service ######################################
-ENGINE_APP_NAME=Engine
-ENGINE_APP_API_PREFIX=/api/v1
-ENGINE_APP_ENV=development
-ENGINE_APP_PORT=8080
-ENGINE_APP_DB=engines
+### ENGINE SERVICE ####################################
+ENGINE__APP_NAME=Engine
+ENGINE__APP_API_PREFIX=/api/v1
+ENGINE__APP_ENV=development
+ENGINE__APP_DB=engines
+ENGINE__FIRST_SUPERUSER_EMAIL=info@zkit.com
+ENGINE__FIRST_SUPERUSER_USERNAME=info
+ENGINE__FIRST_SUPERUSER_PASSWORD=123456
+ENGINE__FIRST_SUPERUSER_FULLNAME=Zkit
+ENGINE__ENABLE_EMAIL_VERIFICATION=False
+ENGINE__ALLOW_REGISTRATION=False
+
 
 ### AVATAR SERVICE ####################################
-AVATAR_APP_NAME=Avatar
-AVATAR_APP_API_PREFIX=/api/v1
-AVATAR_APP_ENV=development
-AVATAR_APP_PORT=8081
-AVATAR_APP_DB=avatars
+AVATAR__APP_NAME=Avatar
+AVATAR__APP_API_PREFIX=/api/v1
+AVATAR__APP_ENV=development
+AVATAR__APP_DB=avatars
 
 ### CONTENT SERVICE ####################################
 CONTENT_APP_NAME=Content
