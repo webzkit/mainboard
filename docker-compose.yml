@@ -6,8 +6,28 @@ networks:
 
 include:
     - ./engine/service.yml
+    - ./avatar/service.yml
+    #- ./ecommerce/service.yml
+    #- ./multimedia/service.yml
+    #- ./content/service.yml
 
 services:
+    #### Registry & discovery service #################################
+    consul:
+        container_name: zkit_monitor_consul
+        build:
+            context: ./containers/monitors/consul
+            dockerfile: Dockerfile
+        command: consul agent -dev -client 0.0.0.0
+        volumes:
+            - ${DATA_PATH_HOST}/consul/data:/consul/data
+            - ${DATA_PATH_HOST}/consul/config:/consul/config
+        ports:
+            - 8500:8500
+            - 8600:8600/udp
+        networks:
+            - frontend
+
     #### Api Gateway service ###########################################
     api_gateway:
         container_name: zkit_api_gateway
@@ -31,80 +51,6 @@ services:
             - redis
         restart: unless-stopped
 
-    ## Avatar #################################################
-    avatar:
-        container_name: zkit_avatar
-        build:
-            context: ./avatar
-            args:
-                - PYTHON_VERSION=${PYTHON_VERSION}
-                - INSTALL_FFMPEG=${INSTALL_FFMPEG}
-        env_file:
-            - .env
-        ports:
-            - "8081:8000"
-        volumes:
-            - ./avatar/src/:/zkit/
-        networks:
-            - frontend
-        restart: unless-stopped
-
-    ### ecommerce service #########################################
-    ecommerce:
-        container_name: zkit_ecommerce
-        build:
-            context: ./ecommerce
-            args:
-                - PYTHON_VERSION=${PYTHON_VERSION}
-        env_file:
-            - .env
-        command: ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8000", "--log-level", "debug"]
-        ports:
-            - "${ECOMMERCE_APP_PORT}:8000"
-        volumes:
-            - ./ecommerce/src/:/zkit/
-        networks:
-            - frontend
-        restart: unless-stopped
-
-    ### multimedia service #########################################
-    multimedia:
-        container_name: zkit_multimedia
-        build:
-            context: ./multimedia
-            args:
-                - PYTHON_VERSION=${PYTHON_VERSION}
-        env_file:
-            - .env
-        command: ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8000", "--log-level", "debug"]
-        ports:
-            - "${MULTIMEDIA_APP_PORT}:8000"
-        volumes:
-            - ./multimedia/src/:/zkit/
-        networks:
-            - frontend
-        restart: unless-stopped
-
-    ### content service ###########################################
-    content:
-        container_name: zkit_content
-        build:
-            context: ./content
-            args:
-                - PYTHON_VERSION=${PYTHON_VERSION}
-        env_file:
-            - .env
-        command: ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8000", "--log-level", "debug"]
-        ports:
-            - "${CONTENT_APP_PORT}:8000"
-        volumes:
-            - ./content/src/:/zkit/
-        networks:
-            - frontend
-        depends_on:
-            - mongo
-        restart: unless-stopped
-
     ### Postgres DB #########################################
     postgres:
         container_name: zkit_postgres
@@ -125,8 +71,8 @@ services:
             - "${POSTGRES_PORT}:5432"
         networks:
             - frontend
-        depends_on:
-            - pgadmin
+        #depends_on:
+        #    - pgadmin
         restart: unless-stopped
 
     ### mongo DB #########################################
@@ -247,22 +193,6 @@ services:
             - CH_HOST=clickhouse:9123
             - USER=myuser
             - PASSWORD=mypass
-
-    #### Monior
-    consul:
-        container_name: zkit_monitor_consul
-        build:
-            context: ./containers/monitors/consul
-            dockerfile: Dockerfile
-        command: consul agent -dev -client 0.0.0.0
-        volumes:
-            - ${DATA_PATH_HOST}/consul/data:/consul/data
-            - ${DATA_PATH_HOST}/consul/config:/consul/config
-        ports:
-            - 8500:8500
-            - 8600:8600/udp
-        networks:
-            - frontend
 
 volumes:
     postgres:
