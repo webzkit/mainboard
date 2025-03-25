@@ -170,7 +170,7 @@ services:
         container_name: zkit_clickhouse
         volumes:
             - ${DATA_PATH_HOST}/clickhouse/data_dir:/var/lib/clickhouse
-            #- ./containers/clickhouse:/etc/clickhouse-server/users.d/
+            - ./containers/clickhouse:/etc/clickhouse-server/users.d/
         ulimits:
             nofile:
                 soft: 262144

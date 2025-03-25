@@ -1,6 +1,12 @@
 <clickhouse>
     <users>
         <default>
+            <password>your_password</password>
+            <networks>
+                <ip>::/0</ip>
+            </networks>
+            <profile>default</profile>
+            <quota>default</quota>
         </default>
     </users>
 </clickhouse>
