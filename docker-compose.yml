@@ -25,6 +25,8 @@ services:
         ports:
             - 8500:8500
             - 8600:8600/udp
+        depends_on:
+            - api_gateway
         networks:
             - frontend
 
@@ -45,7 +47,6 @@ services:
         networks:
             - frontend
         depends_on:
-            - consul
             - engine
             - avatar
             - redis
