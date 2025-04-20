@@ -44,12 +44,14 @@ services:
             - "80:8000"
         volumes:
             - ./api_gateway/src/:/zkit/
+            - ${DATA_PATH_HOST}/api_gateway/data/:/keys/
         networks:
             - frontend
         depends_on:
             - engine
             - avatar
             - redis
+            - clickhouse
         restart: unless-stopped
 
     ### Postgres DB #########################################
