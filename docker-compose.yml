@@ -14,7 +14,7 @@ include:
 services:
     #### Registry & discovery service #################################
     consul:
-        container_name: zkit_monitor_consul
+        #container_name: zkit_monitor_consul
         build:
             context: ./containers/monitors/consul
             dockerfile: Dockerfile
@@ -27,12 +27,14 @@ services:
             - 8600:8600/udp
         depends_on:
             - api_gateway
+            - engine
+            - avatar
         networks:
             - frontend
 
     #### Api Gateway service ###########################################
     api_gateway:
-        container_name: zkit_api_gateway
+        #container_name: zkit_api_gateway
         build:
             context: ./api_gateway
             dockerfile: Dockerfile
@@ -48,15 +50,13 @@ services:
         networks:
             - frontend
         depends_on:
-            - engine
-            - avatar
             - redis
             - clickhouse
         restart: unless-stopped
 
     ### Postgres DB #########################################
     postgres:
-        container_name: zkit_postgres
+        #container_name: zkit_postgres
         build:
             context: ./containers/postgres
             args:
@@ -80,7 +80,7 @@ services:
 
     ### mongo DB #########################################
     mongo:
-        container_name: zkit_mongo
+        #container_name: zkit_mongo
         build:
             context: ./containers/mongo
             args:
@@ -98,7 +98,7 @@ services:
 
     ### Redis ##############################################
     redis:
-        container_name: zkit_redis
+        #container_name: zkit_redis
         build:
             context: ./containers/redis
             args:
@@ -115,7 +115,7 @@ services:
     ## For developer
     ### pgAdmin ##############################################
     pgadmin:
-        container_name: zkit_pgadmin
+        #container_name: zkit_pgadmin
         build:
             context: ./containers/pgadmin
         environment:
@@ -170,7 +170,7 @@ services:
     ## Logging
     clickhouse:
         image: clickhouse/clickhouse-server
-        container_name: zkit_clickhouse
+        #container_name: zkit_clickhouse
         volumes:
             - ${DATA_PATH_HOST}/clickhouse/data_dir:/var/lib/clickhouse
             - ./containers/clickhouse:/etc/clickhouse-server/users.d/
