@@ -1,32 +1,32 @@
-# zkit Gate
+# 🚀 Zkit Portal
 
-### Development
+Inspired by passion
 
-Uses the default FastApi development server.
+## 📑 Table of Contents
 
-1. cp env-sample to .env
-2. Build the images and run the containers:
+- [📊 Overview]
+    - [Structure]
+- [🌐 Architecture Overview]
+    - [1. DBS]
+    - [2. Serving]
+    - [3. tools for developer]
 
-    ```sh
-    docker-compose up -d --build zkit
-    ```
+## 🌐 Architecture Overview
 
-    Test it out at The "application" folder is mounted into the container and your code changes apply automatically.
+## 🚀 Development
 
-    ##### Tool
+All available commands can be found in the `Makefile`.
 
-    The PgAdmin is the most popular and feature rich Open Source administration and development platform for PostgreSQL
+### 🔧 Setup Environment Variables
 
-    ```
-    link: http://localhost:5050
-    username: pgadmin4@pgadmin.org
-    password: admin
-    ```
+Please run the following command to setup the `.env` files:
 
-3. init db
-
+```bash
+cp env.example .env
 ```
-docker exec -it zkit bash
-alembic revision --autogenerate -m "this is message"
-alembic upgrade head
+
+### ✅ Start all Service
+
+```bash
+    make up-all
 ```
