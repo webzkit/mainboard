@@ -10,6 +10,10 @@ APP_CODE_CONTAINER_FLAG=:cached
 # Choose storage path on your machine. For all storage systems
 DATA_PATH_HOST=~/.data-docker/zkit/data
 
+# Name of your application container in docker
+COMPOSE_PROJECT_NAME=zkit
+COMPOSE_IGNORE_ORPHANS=true
+
 ### All Networks driver #################################
 NETWORKS_DRIVER=bridge
 
@@ -39,6 +43,9 @@ POSTGRES_HOST=postgres
 POSTGRES_USER=default
 POSTGRES_PASSWORD=secret
 POSTGRES_PORT=5432
+
+### CLICKHOUSE ########################################
+CLICKHOUSE_VERSION=25.5-alpine
 
 ### PGADMIN ###########################################
 # use this address http://ip6-localhost:5050

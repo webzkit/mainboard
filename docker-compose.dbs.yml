@@ -1,0 +1,84 @@
+#name: ${COMPOSE_PROJECT_NAME}
+
+networks:
+    zkit_network:
+        external: true
+
+services:
+    ### Postgres DB #########################################
+    postgres:
+        build:
+            context: ./containers/postgres
+            args:
+                - POSTGRES_VERSION=${POSTGRES_VERSION}
+        ## for develop
+        command: postgres -c log_destination=stderr -c log_statement=all -c log_connections=on -c log_disconnections=on
+        volumes:
+            - ${DATA_PATH_HOST}/postgres:/var/lib/postgresql/data/
+        environment:
+            POSTGRES_DB: ${POSTGRES_DB:-dbname}
+            POSTGRES_USER: ${POSTGRES_USER:-username}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+            PGDATA: /var/lib/postgresql/data/
+        ports:
+            - "${POSTGRES_PORT}:5432"
+        networks:
+            - zkit_network
+        restart: unless-stopped
+
+    ### mongo DB #########################################
+    mongo:
+        build:
+            context: ./containers/mongo
+            args:
+                - MONGO_VERSION=${MONGO_VERSION}
+        restart: unless-stopped
+        volumes:
+            - ${DATA_PATH_HOST}/mongodb:/data/db
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+            MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+        ports:
+            - ${MONGO_PORT}:27017
+        networks:
+            - zkit_network
+
+    ### Redis ##############################################
+    redis:
+        build:
+            context: ./containers/redis
+            args:
+                - REDIS_VERSION=${REDIS_VERSION}
+        restart: unless-stopped
+        command: redis-server --requirepass ${REDIS_PASSWORD}
+        volumes:
+            - ${DATA_PATH_HOST}/redis:/data
+        ports:
+            - ${REDIS_PORT}:6379
+        networks:
+            - zkit_network
+
+    ### Clickhouse ##########################################
+    clickhouse:
+        build:
+            context: ./containers/clickhouse
+            args:
+                - CLICKHOUSE_VERSION=${CLICKHOUSE_VERSION}
+        volumes:
+            - ${DATA_PATH_HOST}/clickhouse/data_dir:/var/lib/clickhouse
+            - ./containers/clickhouse:/etc/clickhouse-server/users.d/
+        ulimits:
+            nofile:
+                soft: 262144
+                hard: 262144
+        ports:
+            - 9123:8123
+            - 8002:9000
+        networks:
+            - zkit_network
+
+volumes:
+    postgres:
+        driver: ${VOLUMES_DRIVER}
+    mongo:
+        driver: ${VOLUMES_DRIVER}

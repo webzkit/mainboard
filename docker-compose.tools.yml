@@ -1,0 +1,39 @@
+#name: ${COMPOSE_PROJECT_NAME}
+
+networks:
+    zkit_network:
+        external: true
+
+services:
+    ### pgAdmin ##############################################
+    pgadmin:
+        build:
+            context: ./containers/pgadmin
+        environment:
+            PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-info@info.com}
+            PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-password}
+        volumes:
+            - ${DATA_PATH_HOST}/pgadmin:/root/.pgadmin
+        ports:
+            - "${PGADMIN_PORT:-5050}:80"
+        networks:
+            - zkit_network
+        restart: unless-stopped
+
+    ### pgAdmin ##############################################
+    clickhouse-ui:
+        build:
+            context: ./containers/clickhouse/ui
+        networks:
+            - zkit_network
+        ports:
+            - 7071:80
+        environment:
+            - CH_NAME=my_config
+            - CH_HOST=clickhouse:9123
+            - USER=myuser
+            - PASSWORD=mypass
+
+volumes:
+    pgadmin:
+        driver: ${VOLUMES_DRIVER}

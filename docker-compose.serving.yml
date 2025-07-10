@@ -1,0 +1,69 @@
+#name: ${COMPOSE_PROJECT_NAME}
+
+networks:
+    zkit_network:
+        external: true
+
+include:
+    - ./engine/service.yml
+    - ./avatar/service.yml
+#- ./ecommerce/service.yml
+#- ./multimedia/service.yml
+#- ./content/service.yml
+
+services:
+    #### Registry & discovery service #################################
+    consul:
+        build:
+            context: ./containers/monitors/consul
+            dockerfile: Dockerfile
+        command: consul agent -dev -client 0.0.0.0
+        volumes:
+            - ${DATA_PATH_HOST}/consul/data:/consul/data
+            - ${DATA_PATH_HOST}/consul/config:/consul/config
+        ports:
+            - 8500:8500
+            - 8600:8600/udp
+        depends_on:
+            - api_gateway
+            - engine
+            - avatar
+        networks:
+            - zkit_network
+
+    #### Api Gateway service ###########################################
+    api_gateway:
+        build:
+            context: ./api_gateway
+            dockerfile: Dockerfile
+            args:
+                - PYTHON_VERSION=${PYTHON_VERSION}
+        env_file:
+            - .env
+        ports:
+            - "80:8000"
+        volumes:
+            - ./api_gateway/src/:/zkit/
+            - ${DATA_PATH_HOST}/api_gateway/data/:/keys/
+        networks:
+            - zkit_network
+        links:
+            - redis
+            - clickhouse
+        restart: unless-stopped
+
+    ### Extends service ##############################################
+    postgres:
+        extends:
+            file: docker-compose.dbs.yml
+            service: postgres
+
+    redis:
+        extends:
+            file: docker-compose.dbs.yml
+            service: redis
+
+    clickhouse:
+        extends:
+            file: docker-compose.dbs.yml
+            service: clickhouse
