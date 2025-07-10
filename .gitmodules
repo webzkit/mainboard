@@ -26,3 +26,7 @@
 	path = api_gateway
 	url = git@github.com:webzkit/api_gateway.git
     ignore = all
+[submodule "orchestration"]
+	path = orchestration
+	url = git@github.com:webzkit/orchestration.git
+    ignore = all
