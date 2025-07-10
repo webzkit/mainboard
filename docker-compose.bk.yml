@@ -1,8 +1,8 @@
 name: zkit
 
 networks:
-    frontend:
-        driver: ${NETWORKS_DRIVER}
+    zkit_network:
+        external: true
 
 include:
     - ./engine/service.yml
@@ -30,7 +30,7 @@ services:
             - engine
             - avatar
         networks:
-            - frontend
+            - zkit_network
 
     #### Api Gateway service ###########################################
     api_gateway:
@@ -48,7 +48,7 @@ services:
             - ./api_gateway/src/:/zkit/
             - ${DATA_PATH_HOST}/api_gateway/data/:/keys/
         networks:
-            - frontend
+            - zkit_network
         depends_on:
             - redis
             - clickhouse
@@ -73,7 +73,7 @@ services:
         ports:
             - "${POSTGRES_PORT}:5432"
         networks:
-            - frontend
+            - zkit_network
         #depends_on:
         #    - pgadmin
         restart: unless-stopped
@@ -94,7 +94,7 @@ services:
         ports:
             - ${MONGO_PORT}:27017
         networks:
-            - frontend
+            - zkit_network
 
     ### Redis ##############################################
     redis:
@@ -110,7 +110,7 @@ services:
         ports:
             - ${REDIS_PORT}:6379
         networks:
-            - frontend
+            - zkit_network
 
     ## For developer
     ### pgAdmin ##############################################
@@ -126,7 +126,7 @@ services:
         ports:
             - "${PGADMIN_PORT:-5050}:80"
         networks:
-            - frontend
+            - zkit_network
         restart: unless-stopped
 
     ##
@@ -152,7 +152,7 @@ services:
             timeout: 5s
             retries: 15
         networks:
-            - frontend
+            - zkit_network
 
     ##
     kafka-ui:
@@ -165,7 +165,7 @@ services:
             - KAFKA_CLUSTERS_0_NAME=local
             - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:29092
         networks:
-            - frontend
+            - zkit_network
 
     ## Logging
     clickhouse:
@@ -182,13 +182,13 @@ services:
             - 9123:8123
             - 8002:9000
         networks:
-            - frontend
+            - zkit_network
 
     clickhouse-ui:
         image: spoonest/clickhouse-tabix-web-client
         container_name: zkit_clickhouse_ui
         networks:
-            - frontend
+            - zkit_network
         ports:
             - 7071:80
         environment:
