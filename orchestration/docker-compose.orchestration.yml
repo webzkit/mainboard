@@ -1,3 +1,0 @@
-networks:
-    portal_network:
-        external: true

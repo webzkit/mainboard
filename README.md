@@ -28,5 +28,5 @@ cp env.example .env
 ### ✅ Start all Service
 
 ```bash
-    make up-all
+make up-all
 ```
