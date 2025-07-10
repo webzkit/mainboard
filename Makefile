@@ -6,6 +6,7 @@ NAME_NETWORK_DRIVER := zkit_network
 NETWORK_DRIVER := bridge
 SERVING_COMPOSE_FILE := docker-compose.serving.yml
 DBS_COMPOSE_FILE := docker-compose.dbs.yml
+TOOL_COMPOSE_FILE := docker-compose.tools.yml
 
 # Network
 up-network:
@@ -23,13 +24,19 @@ up-serving:
 up-dbs:
 	docker compose -f $(DBS_COMPOSE_FILE) up -d --build
 
+up-tools:
+	docker compose -f $(TOOL_COMPOSE_FILE) up -d --build
+
 
 ### Down Services Commands ##########################################
 down-serving:
 	docker compose -f $(SERVING_COMPOSE_FILE) down
 
 down-dbs:
-	docker compose -f $(DBS_COMPOSE_FILE) down
+	docker compose -f $(DBS_COMPOSE_FILE) down -v
+
+down-tools:
+	docker compose -f $(TOOL_COMPOSE_FILE) down -v
 
 
 ### Logs Commands ####################################################
@@ -39,14 +46,48 @@ logs-dbs:
 logs-serving:
 	docker compose -f $(SERVING_COMPOSE_FILE) logs -f
 
+logs-tools:
+	docker compose -f $(TOOL_COMPOSE_FILE) logs -f
+
+
+### Start Services Commands #########################################
+start-serving:
+	docker compose -f $(SERVING_COMPOSE_FILE) restart
+
+start-dbs:
+	docker compose -f $(DBS_COMPOSE_FILE) restart
+
+start-tools:
+	docker compose -f $(TOOL_COMPOSE_FILE) restart
+
+
+### Down and Up Services Commands ####################################
+restart-serving: down-serving up-serving
+restart-dbs: down-dbs up-dbs
+restart-tools: down-tools up-tools
+
+
+### Clean everything #################################################
+clean:
+	docker compose -f $(SERVING_COMPOSE_FILE) down
+	docker compose -f $(DBS_COMPOSE_FILE) down -v
+	docker compose -f $(TOOL_COMPOSE_FILE) down -v
+###	docker system prune -f
 
 ### Utility Commands #################################################
+up-all: up-dbs up-serving up-tools
+
 view-dc-format:
 	docker ps --format '{{.ID}} {{.Names}} {{ json .Networks}}'
 
 
 ### Help Commands ###################################################
 help:
-	@echo "Help commands:"
-	@echo "Help commands:"
-
+	@echo "Commands:"
+	@echo "make up-<service>            - Start all services"
+	@echo "make down-<service>          - Stop all services"
+	@echo "make retart-<service>        - Restart all services"
+	@echo "make start-<service>         - Start all services"
+	@echo "make clean                   - Remove all containers and everything"
+	@echo "make logs-<service>          - Show logs for spectific service"
+	@echo "make view-<service>          - View spectific service"

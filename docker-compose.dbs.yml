@@ -1,4 +1,4 @@
-name: ${NAME_DOCKER_COMPOSE}
+#name: ${COMPOSE_PROJECT_NAME}
 
 networks:
     zkit_network:

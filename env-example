@@ -10,8 +10,9 @@ APP_CODE_CONTAINER_FLAG=:cached
 # Choose storage path on your machine. For all storage systems
 DATA_PATH_HOST=~/.data-docker/zkit/data
 
-# Name docker
-NAME_DOCKER_COMPOSE=zkit
+# Name of your application container in docker
+COMPOSE_PROJECT_NAME=zkit
+COMPOSE_IGNORE_ORPHANS=true
 
 ### All Networks driver #################################
 NETWORKS_DRIVER=bridge
