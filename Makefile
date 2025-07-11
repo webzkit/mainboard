@@ -6,6 +6,7 @@ NAME_NETWORK_DRIVER := zkit_network
 NETWORK_DRIVER := bridge
 SERVING_COMPOSE_FILE := docker-compose.serving.yml
 DBS_COMPOSE_FILE := docker-compose.dbs.yml
+ORCHESTRATION_COMPOSE_FILE := ./orchestration/docker-compose.orchestration.yml
 TOOL_COMPOSE_FILE := docker-compose.tools.yml
 
 # Network
@@ -14,7 +15,6 @@ up-network:
 
 down-network:
 	docker network rm $(NAME_NETWORK_DRIVER)
-
 
 
 ### Up Sevices Commands ############################################
@@ -27,6 +27,9 @@ up-dbs:
 up-tools:
 	docker compose -f $(TOOL_COMPOSE_FILE) up -d --build
 
+up-orchestration:
+	docker compose -f $(ORCHESTRATION_COMPOSE_FILE) up -d --build
+
 
 ### Down Services Commands ##########################################
 down-serving:
@@ -37,6 +40,9 @@ down-dbs:
 
 down-tools:
 	docker compose -f $(TOOL_COMPOSE_FILE) down -v
+
+down-orchestration:
+	docker compose -f $(ORCHESTRATION_COMPOSE_FILE) down -v
 
 
 ### Logs Commands ####################################################
@@ -49,6 +55,9 @@ logs-serving:
 logs-tools:
 	docker compose -f $(TOOL_COMPOSE_FILE) logs -f
 
+logs-orchestration:
+	docker compose -f $(ORCHESTRATION_COMPOSE_FILE) logs -f
+
 
 ### Start Services Commands #########################################
 start-serving:
@@ -60,11 +69,15 @@ start-dbs:
 start-tools:
 	docker compose -f $(TOOL_COMPOSE_FILE) restart
 
+start-orchestration:
+	docker compose -f $(ORCHESTRATION_COMPOSE_FILE) restart
+
 
 ### Down and Up Services Commands ####################################
 restart-serving: down-serving up-serving
 restart-dbs: down-dbs up-dbs
 restart-tools: down-tools up-tools
+restart-orchestration: down-orchestration up-orchestration
 
 
 ### Clean everything #################################################
@@ -72,10 +85,11 @@ clean:
 	docker compose -f $(SERVING_COMPOSE_FILE) down
 	docker compose -f $(DBS_COMPOSE_FILE) down -v
 	docker compose -f $(TOOL_COMPOSE_FILE) down -v
+	docker compose -f $(ORCHESTRATION_COMPOSE_FILE) down -v
 ###	docker system prune -f
 
 ### Utility Commands #################################################
-up-all: up-dbs up-serving up-tools
+up-all: up-dbs up-serving up-tools up-orchestration
 
 view-dc-format:
 	docker ps --format '{{.ID}} {{.Names}} {{ json .Networks}}'
