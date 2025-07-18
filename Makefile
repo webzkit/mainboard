@@ -6,7 +6,8 @@ NAME_NETWORK_DRIVER := zkit_network
 NETWORK_DRIVER := bridge
 SERVING_COMPOSE_FILE := docker-compose.serving.yml
 DBS_COMPOSE_FILE := docker-compose.dbs.yml
-ORCHESTRATION_COMPOSE_FILE := ./orchestration/docker-compose.orchestration.yml
+ORCHESTRATION_COMPOSE_FILE := ./orchestration/docker-compose.orchestration.yaml
+OBSERVABILITY_COMPOSE_FILE := ./observability/docker-compose.observability.yaml
 TOOL_COMPOSE_FILE := docker-compose.tools.yml
 
 # Network
@@ -30,6 +31,9 @@ up-tools:
 up-orchestration:
 	docker compose -f $(ORCHESTRATION_COMPOSE_FILE) up -d --build
 
+up-observability:
+	docker compose -f $(OBSERVABILITY_COMPOSE_FILE) up -d --build
+
 
 ### Down Services Commands ##########################################
 down-serving:
@@ -43,6 +47,9 @@ down-tools:
 
 down-orchestration:
 	docker compose -f $(ORCHESTRATION_COMPOSE_FILE) down -v
+
+down-observability:
+	docker compose -f $(OBSERVABILITY_COMPOSE_FILE) down -v
 
 
 ### Logs Commands ####################################################
@@ -58,6 +65,10 @@ logs-tools:
 logs-orchestration:
 	docker compose -f $(ORCHESTRATION_COMPOSE_FILE) logs -f
 
+logs-observability:
+	docker compose -f $(OBSERVABILITY_COMPOSE_FILE) logs -f
+
+
 
 ### Start Services Commands #########################################
 start-serving:
@@ -72,12 +83,16 @@ start-tools:
 start-orchestration:
 	docker compose -f $(ORCHESTRATION_COMPOSE_FILE) restart
 
+start-observability:
+	docker compose -f $(OBSERVABILITY_COMPOSE_FILE) restart
+
 
 ### Down and Up Services Commands ####################################
 restart-serving: down-serving up-serving
 restart-dbs: down-dbs up-dbs
 restart-tools: down-tools up-tools
 restart-orchestration: down-orchestration up-orchestration
+restart-observability: down-observability up-observability
 
 
 ### Clean everything #################################################
@@ -86,6 +101,7 @@ clean:
 	docker compose -f $(DBS_COMPOSE_FILE) down -v
 	docker compose -f $(TOOL_COMPOSE_FILE) down -v
 	docker compose -f $(ORCHESTRATION_COMPOSE_FILE) down -v
+	docker compose -f $(OBSERVABILITY_COMPOSE_FILE) down -v
 ###	docker system prune -f
 
 ### Utility Commands #################################################
