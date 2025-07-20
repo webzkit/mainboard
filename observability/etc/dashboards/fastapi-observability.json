@@ -995,8 +995,11 @@
                         "type": "loki",
                         "uid": "loki"
                     },
-                    "expr": "{compose_service=~\"app-.*\"} | pattern `<date> <time> <type> <logger> <code> [<_>=<trace_id> <_>=<span_id> <_>=<service_name>] - <msg>` | line_format \"{{.compose_service}}\\t{{.type}}\\t trace_id={{.trace_id}}\\t {{.msg}}\" |= \"$log_keyword\"",
+                    "direction": "backward",
+                    "editorMode": "builder",
+                    "expr": "{compose_service=~\"app-.*|api_gateway\"} | pattern `<date> <time> <type> <logger> <code> [<_>=<trace_id> <_>=<span_id> <_>=<service_name>] - <msg>` | line_format `{{.compose_service}}\\t{{.type}}\\t trace_id={{.trace_id}}\\t {{.msg}}` |= `$log_keyword`",
                     "hide": false,
+                    "queryType": "range",
                     "refId": "A"
                 }
             ],
