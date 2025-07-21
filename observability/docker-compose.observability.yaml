@@ -18,10 +18,24 @@ services:
         networks:
             - zkit_network
 
+    minio:
+        image: minio/minio:RELEASE.2025-01-20T14-49-07Z
+        ports:
+            - 9000:9000
+            - 9001:9001
+        user: "0:0"
+        volumes:
+            - ./storage:/data
+        environment:
+            - MINIO_ROOT_USER=minio
+            - MINIO_ROOT_PASSWORD=passminio
+        command: server /data --console-address ":9001"
+        networks:
+            - zkit_network
+
     app-a:
         build:
             context: ./fastapi_app
-        #image: ghcr.io/blueswen/fastapi-observability/app:latest
         ports:
             - "8000:8000"
         depends_on:

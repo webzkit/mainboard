@@ -117,6 +117,4 @@ if __name__ == "__main__":
         "fmt"
     ] = "%(asctime)s %(levelname)s [%(name)s] [%(filename)s:%(lineno)d] [trace_id=%(otelTraceID)s span_id=%(otelSpanID)s resource.service.name=%(otelServiceName)s] - %(message)s"
 
-    uvicorn.run(
-        app, host="0.0.0.0", reload=True, port=EXPOSE_PORT, log_config=log_config
-    )
+    uvicorn.run(app, host="0.0.0.0", port=EXPOSE_PORT, log_config=log_config)
