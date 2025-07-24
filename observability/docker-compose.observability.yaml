@@ -12,6 +12,9 @@ x-logging: &default-logging
 services:
     loki:
         image: grafana/loki:3.5.0
+        volumes:
+            - ./etc/loki/loki-config.yaml:/etc/loki/local-config.yaml
+            - ${DATA_PATH_HOST:-/home/local/.data-docker/zkit/data}/loki:/loki
         command: -config.file=/etc/loki/local-config.yaml
         ports:
             - "3100:3100"
@@ -25,10 +28,10 @@ services:
             - 9001:9001
         user: "0:0"
         volumes:
-            - ./storage:/data
+            - ${DATA_PATH_HOST:-/home/local/.data-docker/zkit/data}/minio:/data
         environment:
-            - MINIO_ROOT_USER=minio
-            - MINIO_ROOT_PASSWORD=passminio
+            - MINIO_ROOT_USER=admin
+            - MINIO_ROOT_PASSWORD=password
         command: server /data --console-address ":9001"
         networks:
             - zkit_network
