@@ -12,25 +12,54 @@ x-logging: &default-logging
 services:
     loki:
         image: grafana/loki:3.5.0
+        volumes:
+            - ./etc/loki/loki-config.yaml:/etc/loki/local-config.yaml
+            - ${DATA_PATH_HOST}/loki/data:/loki
         command: -config.file=/etc/loki/local-config.yaml
         ports:
             - "3100:3100"
         networks:
             - zkit_network
-
-    app-a:
-        build:
-            context: ./fastapi_app
-        #image: ghcr.io/blueswen/fastapi-observability/app:latest
-        ports:
-            - "8000:8000"
         depends_on:
-            - loki
+            minio:
+                condition: service_healthy
+            create-bucket:
+                condition: service_completed_successfully
+
+    minio:
+        image: minio/minio:RELEASE.2025-01-20T14-49-07Z
+        ports:
+            - 9000:9000
+            - 9001:9001
+        user: "0:0"
+        volumes:
+            - ${DATA_PATH_HOST}/minio/data:/data
         environment:
-            APP_NAME: "app-a"
+            - MINIO_ROOT_USER=admin
+            - MINIO_ROOT_PASSWORD=password
+        command: server /data --console-address ":9001"
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+            interval: 5s
+            timeout: 5s
+            retries: 5
         networks:
             - zkit_network
-        logging: *default-logging
+
+    create-bucket:
+        image: minio/mc:RELEASE.2025-02-04T04-57-50Z
+        depends_on:
+            - minio
+        networks:
+            - zkit_network
+        entrypoint: >
+            /bin/sh -c "
+            sleep 10;
+            mc alias set local http://minio:9000 admin password;
+            mc mb local/loki;
+            mc anonymous set public local/loki;
+            exit 0;
+            "
 
     prometheus:
         image: prom/prometheus:v3.3.1
@@ -82,6 +111,13 @@ services:
         networks:
             - zkit_network
         logging: *default-logging
+
+volumes:
+    loki:
+    minio:
+    grafana:
+    tempo:
+    prometheus:
 
 networks:
     zkit_network:
