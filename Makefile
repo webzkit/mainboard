@@ -8,6 +8,7 @@ SERVING_COMPOSE_FILE := docker-compose.serving.yml
 DBS_COMPOSE_FILE := docker-compose.dbs.yml
 ORCHESTRATION_COMPOSE_FILE := ./orchestration/docker-compose.orchestration.yaml
 OBSERVABILITY_COMPOSE_FILE := ./observability/docker-compose.observability.yaml
+OBSERVABILITY_COMPOSE_PROJECT_NAME=observability
 TOOL_COMPOSE_FILE := docker-compose.tools.yml
 
 # Network
@@ -32,7 +33,7 @@ up-orchestration:
 	docker compose -f $(ORCHESTRATION_COMPOSE_FILE) up -d --build
 
 up-observability:
-	docker compose -f $(OBSERVABILITY_COMPOSE_FILE) up -d --build
+	docker compose -f $(OBSERVABILITY_COMPOSE_FILE) -p $(OBSERVABILITY_COMPOSE_PROJECT_NAME) --env-file ./.env up -d --build
 
 
 ### Down Services Commands ##########################################
@@ -49,7 +50,7 @@ down-orchestration:
 	docker compose -f $(ORCHESTRATION_COMPOSE_FILE) down -v
 
 down-observability:
-	docker compose -f $(OBSERVABILITY_COMPOSE_FILE) down -v
+	docker compose -f $(OBSERVABILITY_COMPOSE_FILE) -p $(OBSERVABILITY_COMPOSE_PROJECT_NAME) --env-file ./.env down -v
 
 
 ### Logs Commands ####################################################
@@ -66,7 +67,7 @@ log-orchestration:
 	docker compose -f $(ORCHESTRATION_COMPOSE_FILE) logs -f
 
 log-observability:
-	docker compose -f $(OBSERVABILITY_COMPOSE_FILE) logs -f
+	docker compose -f $(OBSERVABILITY_COMPOSE_FILE) -p $(OBSERVABILITY_COMPOSE_PROJECT_NAME) --env-file ./.env logs -f
 
 
 ### Start Services Commands #########################################
@@ -83,7 +84,7 @@ start-orchestration:
 	docker compose -f $(ORCHESTRATION_COMPOSE_FILE) restart
 
 start-observability:
-	docker compose -f $(OBSERVABILITY_COMPOSE_FILE) restart
+	docker compose -f $(OBSERVABILITY_COMPOSE_FILE) -p $(OBSERVABILITY_COMPOSE_PROJECT_NAME) --env-file ./.env restart
 
 
 ### Start Services Commands #########################################
@@ -100,7 +101,7 @@ stop-orchestration:
 	docker compose -f $(ORCHESTRATION_COMPOSE_FILE) stop
 
 stop-observability:
-	docker compose -f $(OBSERVABILITY_COMPOSE_FILE) stop
+	docker compose -f $(OBSERVABILITY_COMPOSE_FILE) -p $(OBSERVABILITY_COMPOSE_PROJECT_NAME) --env-file ./.env stop
 
 
 ### Down and Up Services Commands ####################################
@@ -117,7 +118,7 @@ clean:
 	docker compose -f $(DBS_COMPOSE_FILE) down -v
 	docker compose -f $(TOOL_COMPOSE_FILE) down -v
 	docker compose -f $(ORCHESTRATION_COMPOSE_FILE) down -v
-	docker compose -f $(OBSERVABILITY_COMPOSE_FILE) down -v
+	docker compose -f $(OBSERVABILITY_COMPOSE_FILE) -p $(OBSERVABILITY_COMPOSE_PROJECT_NAME) --env-file ./.env down -v
 ###	docker system prune -f
 
 ### Utility Commands #################################################
