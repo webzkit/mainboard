@@ -8,7 +8,8 @@
 APP_CODE_CONTAINER_FLAG=:cached
 
 # Choose storage path on your machine. For all storage systems
-DATA_PATH_HOST=./data_volumes
+# Grant permissions to the directories so containers can access them
+DATA_PATH_HOST=~/.data-docker/zkit/data
 
 # Name of your application container in docker
 COMPOSE_PROJECT_NAME=zkit

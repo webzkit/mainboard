@@ -1,5 +1,3 @@
 .idea
 .env
 .DS_Store
-/data_volumes/*
-!/data_volumes/.gitkeep
