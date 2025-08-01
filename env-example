@@ -45,14 +45,20 @@ POSTGRES_USER=default
 POSTGRES_PASSWORD=secret
 POSTGRES_PORT=5432
 
-### CLICKHOUSE ########################################
-CLICKHOUSE_VERSION=25.5-alpine
-
 ### PGADMIN ###########################################
 # use this address http://ip6-localhost:5050
 PGADMIN_PORT=5050
 PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org
 PGADMIN_DEFAULT_PASSWORD=admin
+
+### CLICKHOUSE ########################################
+CLICKHOUSE_VERSION=25.5-alpine
+CLICKHOUSE_HOST=clickhouse
+CLICKHOUSE_PORT=8123
+CLICKHOUSE_USERNAME=default
+CLICKHOUSE_PASSWORD=your_password
+CLICKHOUSE_POOL_SIZE=5
+CLICKHOUSE_DB=network_management
 
 ### MONGODB ###########################################
 MONGO_ROOT_USERNAME=devroot
@@ -70,6 +76,7 @@ CONSUL_TIMEOUT=5s
 APIGATEWAY_SERVICE_NAME=api_gateway
 ENGINE_SERVICE_NAME=engine
 AVATAR_SERVICE_NAME=avatar
+NETWORK_MANAGEMENT_SERVICE_NAME=network_management
 
 ### API Gateway #######################################
 APIGATEWAY__APP_NAME=Api-Gateway
@@ -100,6 +107,14 @@ AVATAR__APP_NAME=Avatar
 AVATAR__APP_API_PREFIX=/api/v1
 AVATAR__APP_ENV=development
 AVATAR__APP_DB=avatars
+
+
+### NETWORK_MANAGEMENT SERVICE ####################################
+NETWORK_MANAGEMENT__APP_NAME=Network_Management
+NETWORK_MANAGEMENT__APP_API_PREFIX=/api/v1
+NETWORK_MANAGEMENT__APP_ENV=development
+NETWORK_MANAGEMENT__APP_DB=network_management
+
 
 ### CONTENT SERVICE ####################################
 CONTENT_APP_NAME=Content
