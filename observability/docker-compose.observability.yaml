@@ -26,6 +26,19 @@ services:
             create-bucket:
                 condition: service_completed_successfully
 
+    app-a:
+        build:
+            context: ./fastapi_app
+        ports:
+            - "8000:8000"
+        depends_on:
+            - loki
+        environment:
+            APP_NAME: "app-a"
+        networks:
+            - zkit_network
+        logging: *default-logging
+
     minio:
         image: minio/minio:RELEASE.2025-01-20T14-49-07Z
         ports:
