@@ -41,6 +41,7 @@ services:
             - engine
             - avatar
             - network_management
+            - clickhouse
         networks:
             - zkit_network
 
