@@ -30,6 +30,3 @@
 	path = orchestration
 	url = git@github.com:webzkit/orchestration.git
     ignore = all
-[submodule "network_management"]
-	path = network_management
-	url = git@github.com:webzkit/network_management.git

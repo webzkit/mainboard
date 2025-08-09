@@ -7,7 +7,6 @@ networks:
 include:
     - ./engine/service.yml
     - ./avatar/service.yml
-    - ./network_management/service.yml
 #- ./ecommerce/service.yml
 #- ./multimedia/service.yml
 #- ./content/service.yml
@@ -40,7 +39,6 @@ services:
             - api_gateway
             - engine
             - avatar
-            - network_management
             - clickhouse
         networks:
             - zkit_network
