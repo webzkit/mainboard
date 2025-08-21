@@ -1,4 +1,4 @@
-#name: ${COMPOSE_PROJECT_NAME}
+name: serving
 
 networks:
     zkit_network:
@@ -11,7 +11,7 @@ include:
 #- ./multimedia/service.yml
 #- ./content/service.yml
 
-x-logging: &default-logging
+x-lorging: &default-logging
     driver: loki
     options:
         loki-url: "http://localhost:3100/api/prom/push"
@@ -39,7 +39,7 @@ services:
             - api_gateway
             - engine
             - avatar
-            - clickhouse
+            #- clickhouse
         networks:
             - zkit_network
 
@@ -59,24 +59,24 @@ services:
             - ${DATA_PATH_HOST}/api_gateway/data/:/keys/
         networks:
             - zkit_network
-        links:
-            - redis
-            - clickhouse
+        #depends_on:
+        #- redis
+        #- clickhouse
         restart: unless-stopped
         logging: *default-logging
 
     ### Extends service ##############################################
-    postgres:
-        extends:
-            file: docker-compose.dbs.yml
-            service: postgres
+    #postgres:
+    #    extends:
+    #        file: docker-compose.dbs.yml
+    #        service: postgres
 
-    redis:
-        extends:
-            file: docker-compose.dbs.yml
-            service: redis
+    #redis:
+    #    extends:
+    #        file: docker-compose.dbs.yml
+    #        service: redis
 
-    clickhouse:
-        extends:
-            file: docker-compose.dbs.yml
-            service: clickhouse
+    #clickhouse:
+    #    extends:
+    #        file: docker-compose.dbs.yml
+    #        service: clickhouse

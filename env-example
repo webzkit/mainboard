@@ -12,7 +12,7 @@ APP_CODE_CONTAINER_FLAG=:cached
 DATA_PATH_HOST=~/.data-docker/zkit/data
 
 # Name of your application container in docker
-COMPOSE_PROJECT_NAME=zkit
+#COMPOSE_PROJECT_NAME=zkit
 COMPOSE_IGNORE_ORPHANS=true
 
 ### All Networks driver #################################
