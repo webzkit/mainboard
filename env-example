@@ -88,6 +88,9 @@ REDIS_RATE_DB=0
 DEFAULT_RATE_LIMIT_TIME=100  # 100 times
 DEFAULT_RATE_LIMIT_PERIOD=3600 # 1 hours
 
+### Obeservability ####################################
+OTLP_GRPC_ENPOOINT=tempo:4317
+
 
 ### ENGINE SERVICE ####################################
 ENGINE__APP_NAME=Engine

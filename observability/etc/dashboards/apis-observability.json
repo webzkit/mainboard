@@ -992,9 +992,9 @@
       "id": 2,
       "options": {
         "dedupStrategy": "none",
-        "enableInfiniteScrolling": false,
+        "enableInfiniteScrolling": true,
         "enableLogDetails": true,
-        "prettifyLogMessage": false,
+        "prettifyLogMessage": true,
         "showCommonLabels": false,
         "showLabels": false,
         "showTime": false,
@@ -1009,8 +1009,8 @@
             "uid": "loki"
           },
           "direction": "backward",
-          "editorMode": "builder",
-          "expr": "{compose_project=~\"serving\"} | pattern `<date> <time> <type> <logger> <code> [<_>=<trace_id> <_>=<span_id> <_>=<service_name>] - <msg>` | line_format `{{.date}} {{.time}} {{.compose_service}} {{.type}}  trace_id={{.trace_id}} {{.msg}}` |= `$log_keyword`",
+          "editorMode": "code",
+          "expr": "{compose_project=~\"serving\"} | pattern `<date> <time> <type> <logger> <code> [<_>=<trace_id> <_>=<span_id> <_>=<service_name>] - <msg>` | line_format \"{{.date}} {{.time}}\\t{{.type}}\\t{{.compose_service}}\\ttrace_id={{.trace_id}}\\t{{.msg}}\" |= `$log_keyword`",
           "hide": false,
           "queryType": "range",
           "refId": "A"
@@ -1076,5 +1076,5 @@
   "timezone": "",
   "title": "APIs Observability",
   "uid": "apis-observability",
-  "version": 4
+  "version": 1
 }
