@@ -34,7 +34,11 @@ scrape_configs:
           - targets: ["api_gateway:8000"]
 
     - job_name: "engine"
-      # Override the global default and scrape targets from this job every 5 seconds.
       scrape_interval: 5s
       static_configs:
           - targets: ["engine:8000"]
+
+    - job_name: "avatar"
+      scrape_interval: 5s
+      static_configs:
+          - targets: ["avatar:8000"]
