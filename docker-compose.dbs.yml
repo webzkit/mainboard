@@ -64,6 +64,8 @@ services:
             context: ./containers/clickhouse
             args:
                 - CLICKHOUSE_VERSION=${CLICKHOUSE_VERSION}
+        environment:
+            TZ: "Asia/Saigon"
         volumes:
             - ${DATA_PATH_HOST}/clickhouse/data_dir:/var/lib/clickhouse
             - ./containers/clickhouse:/etc/clickhouse-server/users.d/

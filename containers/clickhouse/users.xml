@@ -7,6 +7,9 @@
             </networks>
             <profile>default</profile>
             <quota>default</quota>
+            <defaults>
+                <timezone>Asia/Saigon</timezone>
+            </defaults>
         </default>
     </users>
 </clickhouse>
