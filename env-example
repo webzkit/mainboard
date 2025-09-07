@@ -30,7 +30,7 @@ BACKEND_CORS_ORIGINS=["http://localhost:5500", "http://localhost:5501"]
 
 ### docker build #######################################
 PYTHON_VERSION=3.11-slim
-INSTALL_FFMPEG=True
+INSTALL_FFMPEG=true
 REDIS_VERSION=alpine
 
 ### REDIS ##############################################
@@ -76,6 +76,7 @@ CONSUL_TIMEOUT=5s
 APIGATEWAY_SERVICE_NAME=api_gateway
 ENGINE_SERVICE_NAME=engine
 AVATAR_SERVICE_NAME=avatar
+MULTIMEDIA_SERVICE_NAME=multimedia
 NETWORK_MANAGEMENT_SERVICE_NAME=network_management
 
 ### API Gateway #######################################
@@ -89,7 +90,7 @@ DEFAULT_RATE_LIMIT_TIME=100  # 100 times
 DEFAULT_RATE_LIMIT_PERIOD=3600 # 1 hours
 
 ### Obeservability ####################################
-OTLP_GRPC_ENPOOINT=tempo:4317
+OTLP_GRPC_ENDPOINT=tempo:4317
 
 
 ### ENGINE SERVICE ####################################
@@ -111,6 +112,31 @@ AVATAR__APP_API_PREFIX=/api/v1
 AVATAR__APP_ENV=development
 AVATAR__APP_DB=avatars
 
+
+### MULTIMEDIA SERVICE ################################
+MULTIMEDIA__APP_NAME=MultiMedia
+MULTIMEDIA__APP_API_PREFIX=/api/v1
+MULTIMEDIA__APP_ENV=development
+MULTIMEDIA__APP_PORT=8084
+MULTIMEDIA__APP_DB=multimedias
+
+# supported: local, google, s3
+MULTIMEDIA__PREFERED_STORAGE=local
+# save original file or nah True/False
+MULTIMEDIA__SAVE_ORIGINAL=True
+MULTIMEDIA__IMAGE_ORIGINAL_LOCAL_PATH=static/pictures/original/
+MULTIMEDIA__IMAGE_THUMBNAIL_LOCAL_PATH=static/pictures/thumbnail/
+MULTIMEDIA__IMAGE_THUMBNAIL=True
+MULTIMEDIA__IMAGE_AllOWED_FILE_FORMAT=png,jpeg,jpg,webp
+MULTIMEIDA__IMAGE_CONVERTING_PREFERED_FORMAT=png
+# supported:pillow-simd,ffmpeg
+# default:ffmpeg
+MULTIMEDIA__IMAGE_OPTIMIZATION_USING=ffmpeg
+MULTIMEDIA__IMAGE_THUMBNAIL_MAX_WIDTH=320
+# Qrcode
+MULTIMEDIA__QR_IMAGE_WITH_LOGO=True
+MULTIMEDIA__QR_IMAGE_LOCAL_PATH=static/qr/
+MULTIMEDIA__QR_IMAGE_LOGO_PATH=static/logo/logo.png
 
 ### NETWORK_MANAGEMENT SERVICE ####################################
 NETWORK_MANAGEMENT__APP_NAME=Network_Management
@@ -134,6 +160,7 @@ ECOMMERCE_APP_API_PREFIX=/api/v1
 ECOMMERCE_APP_ENV=development
 ECOMMERCE_APP_PORT=8083
 ECOMMERCE_APP_DB=ecommerces
+
 
 ### MULTIMEDIA SERVICE ####################################
 MULTIMEDIA_APP_NAME=MultiMedia

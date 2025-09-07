@@ -7,9 +7,9 @@ networks:
 include:
     - ./engine/service.yml
     - ./avatar/service.yml
-#- ./ecommerce/service.yml
-#- ./multimedia/service.yml
-#- ./content/service.yml
+    #- ./ecommerce/service.yml
+    - ./multimedia/service.yml
+    #- ./content/service.yml
 
 x-lorging: &default-logging
     driver: loki
